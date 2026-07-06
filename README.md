@@ -35,7 +35,7 @@ A descrição técnica minuciosa de cada decisão de engenharia, a inicializaç�
 
 * Otimização de Hardware e Lógica de Incrementos: Estruturação de loops de repetição que gerenciam passos independentes por cor sem travar a execução das leituras analógicas ou a atualização do display I2C.
 
-## Imagens de simulação e compilação
+## Imagens de simulação 
 
 ## Resultados obtidos
 
