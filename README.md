@@ -27,7 +27,7 @@ A descrição técnica minuciosa de cada decisão de engenharia, a inicializaç�
 
 * Acionamento de Servomotores (ESP32 Servo): Utilização da biblioteca otimizada ESP32 Servo para o mapeamento dos pulsos de controle angular na primeira etapa do controle de motores, abstraindo a geração de frequências específicas de 50 Hz exigidas por padrão por esses atuadores.
 
-* Controle Avançado de Motores (MCPWM): Emprego da biblioteca nativa Motor Control PWM (MCPWM) para o gerenciamento de precisão da aplicação principal de acionamento, aproveitando os blocos geradores de PWM dedicados de hardware da ESP32 para controlar os sinais de direção e velocidade aplicados.
+* Controle Avançado de Motores: Emprego da biblioteca ESP32 Servo, novamente, para o gerenciamento de precisão da aplicação principal de acionamento, aproveitando os blocos geradores de PWM dedicados de hardware da ESP32 para controlar os sinais de direção e velocidade aplicados.
 
 * Barramento de Comunicação I2C e UART: Inicialização da interface serial UART0 a 115200 bps para envio de relatórios de depuração. Configuração dos pinos de clock e dados do hardware I2C para comunicação em alta velocidade e envio de buffers de escrita para o display OLED.
 
@@ -36,7 +36,31 @@ A descrição técnica minuciosa de cada decisão de engenharia, a inicializaç�
 * Otimização de Hardware e Lógica de Incrementos: Estruturação de loops de repetição que gerenciam passos independentes por cor sem travar a execução das leituras analógicas ou a atualização do display I2C.
 
 ## Bibliotecas usadas e imagens de simulação 
+Durante o desenvolvimento e validação do sistema no ambiente virtual Wokwi, constatou-se uma limitação de emulação em nível de hardware quanto aos registradores nativos do periférico MCPWM da ESP32. Como a plataforma Wokwi ainda não oferece suporte completo ou estável para todas as funcionalidades avançadas desse módulo específico no nível de simulação, a arquitetura de software foi adaptada para garantir o requisito de um sistema integralmente funcional e simulável.
 
+Dessa forma, adotou-se como estratégia a realocação do controle dos motores para a biblioteca ESP32Servo, que apresentam compatibilidade e estabilidade no simulador.
+
+* LEDC (LED Control PWM):
+
+Função no Projeto: Utilizada primariamente para a modulação de cores do LED RGB na Parte 1 e como alternativa principal para o acionamento de motores DC e atuadores em geral na Parte 2.
+
+Descrição Técnica: Embora seu nome remeta ao controle de LEDs, a LEDC é uma biblioteca oficial do framework da ESP32 baseada em temporizadores de hardware dedicados. Ela permite gerar sinais PWM de propósito geral em praticamente qualquer pino GPIO de saída, sem sobrecarregar a CPU principal.
+
+Vantagens da Adoção: Possibilita configurar independentemente a frequência do sinal e a resolução do temporizador, permitindo um ajuste fino e preciso do duty cycle (de 0% a 100%) por meio de funções simples de mapeamento de canais.
+
+* ESP32Servo:
+
+Função no Projeto: Empregada no controle posicional manual dos servomotores por meio da leitura analógica do potenciômetro.
+
+Descrição Técnica: É uma biblioteca otimizada especificamente para a arquitetura do microcontrolador ESP32, projetada para contornar problemas de incompatibilidade das bibliotecas tradicionais de Arduino (que dependem de registradores AVR). Ela abstrai os temporizadores internos da ESP32 para gerar a frequência estrita de 50 Hz exigida pelo padrão de comunicação dos servomotores.
+
+Vantagens da Adoção: Converte automaticamente valores de ângulos (0° a 180°) ou dados brutos mapeados do conversor analógico-digital (ADC) em larguras de pulso específicas (geralmente entre 500 µs e 2500 µs). Isso evita conflitos de timers com os canais PWM já em uso pela biblioteca LEDC, garantindo que o motor responda de forma fluida e sem vibrações no Wokwi.
+
+* Adafruit_SSD1306 / Adafruit_GFX:
+
+Função no Projeto: Responsável pela interface de comunicação serial via barramento I2C para exibição de dados no display OLED.
+
+Descrição Técnica: A biblioteca gerencia o protocolo de comunicação síncrona nos pinos SDA e SCL da ESP32, enviando buffers de dados visuais e relatórios de estado do sistema (como valores de duty cycle e leitura dos sensores) para monitoramento em tempo real.
 ## Resultados obtidos
 
 O resultado obtido foi um sistema embarcado completo e funcional em ambiente de simulação virtual Wokwi. O microcontrolador foi capaz de gerenciar múltiplos canais de modulação PWM simultaneamente, sustentando o esmaecimento contínuo e independente de um LED RGB enquanto interagia dinamicamente com o usuário na variação de posição de um servomotor e na condução de um atuador mecânico customizado através da biblioteca MCPWM. O monitoramento em tempo real foi validado tanto pelo fluxo contínuo de dados transmitidos via serial UART quanto pelo retorno visual instantâneo projetado no display OLED via barramento I2C.
