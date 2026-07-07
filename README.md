@@ -61,6 +61,18 @@ Vantagens da Adoção: Converte automaticamente valores de ângulos (0° a 180°
 Função no Projeto: Responsável pela interface de comunicação serial via barramento I2C para exibição de dados no display OLED.
 
 Descrição Técnica: A biblioteca gerencia o protocolo de comunicação síncrona nos pinos SDA e SCL da ESP32, enviando buffers de dados visuais e relatórios de estado do sistema (como valores de duty cycle e leitura dos sensores) para monitoramento em tempo real.
+
+### Parte 1 - Controle PWM LED RGB
+![Funcionamento Parte 1](funcionamento_parte_1.png)
+
+### Parte 2 - Controle do Servomotor com Potenciômetro
+![Funcionamento Parte 2 - Simulação 1](funcionamento_parte_2_1.1.png)
+![Funcionamento Parte 2 - Simulação 2](funcionamento_parte_2_1.2.png)
+
+### Parte 3 - Aplicação Customizada
+![Funcionamento Parte 3 - Simulação 1](funcionamento_parte_3.1.png)
+![Funcionamento Parte 3 - Simulação 2](funcionamento_parte_3.2.png)
+
 ## Resultados obtidos
 
 O resultado obtido foi um sistema embarcado completo e funcional em ambiente de simulação virtual Wokwi. O microcontrolador foi capaz de gerenciar múltiplos canais de modulação PWM simultaneamente, sustentando o esmaecimento contínuo e independente de um LED RGB enquanto interagia dinamicamente com o usuário na variação de posição de um servomotor e na condução de um atuador mecânico customizado através da biblioteca MCPWM. O monitoramento em tempo real foi validado tanto pelo fluxo contínuo de dados transmitidos via serial UART quanto pelo retorno visual instantâneo projetado no display OLED via barramento I2C.
