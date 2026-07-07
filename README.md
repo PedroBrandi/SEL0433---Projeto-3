@@ -75,7 +75,7 @@ Descrição Técnica: A biblioteca gerencia o protocolo de comunicação síncro
 
 ## Resultados obtidos
 
-O resultado obtido foi um sistema embarcado completo e funcional em ambiente de simulação virtual Wokwi. O microcontrolador foi capaz de gerenciar múltiplos canais de modulação PWM simultaneamente, sustentando o esmaecimento contínuo e independente de um LED RGB enquanto interagia dinamicamente com o usuário na variação de posição de um servomotor e na condução de um atuador mecânico customizado através da biblioteca MCPWM. O monitoramento em tempo real foi validado tanto pelo fluxo contínuo de dados transmitidos via serial UART quanto pelo retorno visual instantâneo projetado no display OLED via barramento I2C.
+O resultado obtido foi um sistema embarcado completo e funcional em ambiente de simulação virtual Wokwi. O microcontrolador foi capaz de gerenciar múltiplos canais de modulação PWM simultaneamente, sustentando o esmaecimento contínuo e independente de um LED RGB enquanto interagia dinamicamente com o usuário na variação de posição de um servomotor e na condução de um atuador mecânico customizado através, novamente, da biblioteca ESP32 Servo. O monitoramento em tempo real foi validado tanto pelo fluxo contínuo de dados transmitidos via serial UART quanto pelo retorno visual instantâneo projetado no display OLED via barramento I2C.
 
 Tais resultados são satisfatórios e cumprem todos os objetivos esperados da prática.
 
